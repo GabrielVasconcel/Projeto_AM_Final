@@ -22,6 +22,7 @@ Foram aplicados diversos algoritmos de classificação, incluindo:
 - **Comitês de Redes Neurais**
 - **Comitês Heterogêneos**
 - **XGBoost**
+- **LightGBM**
 - **Multi-Layer Perceptron (MLPClassifier)**
 
 
