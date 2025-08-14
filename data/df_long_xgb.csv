@@ -1,0 +1,11 @@
+modelo,etapa,métrica,valor
+xgb,treino,accuracy,0.9302682833159598
+xgb,teste,accuracy,0.8850120693438666
+xgb,treino,f1,0.9510683349374398
+xgb,teste,f1,0.918910554008047
+xgb,treino,recall,0.9625935162094763
+xgb,teste,recall,0.925498753117207
+xgb,treino,precision,0.9398158715666134
+xgb,teste,precision,0.9124154886293793
+xgb,treino,auc,0.0
+xgb,teste,auc,0.9451805134561327

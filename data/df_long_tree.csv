@@ -1,0 +1,11 @@
+modelo,etapa,métrica,valor
+tree,treino,accuracy,0.8474790146485982
+tree,teste,accuracy,0.8413429888084266
+tree,treino,f1,0.8883623805316841
+tree,teste,f1,0.8841160442378586
+tree,treino,recall,0.8619856608478803
+tree,teste,recall,0.8597256857855362
+tree,treino,precision,0.9164043082021541
+tree,teste,precision,0.9099307159353349
+tree,treino,auc,0.0
+tree,teste,auc,0.9334017786904647
