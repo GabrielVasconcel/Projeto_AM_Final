@@ -1,0 +1,11 @@
+modelo,etapa,métrica,valor
+lgbm,treino,accuracy,0.9986832720689087
+lgbm,teste,accuracy,0.8907175773535221
+lgbm,treino,f1,0.9990652749649478
+lgbm,teste,f1,0.9226708074534161
+lgbm,treino,recall,0.9995324189526185
+lgbm,teste,recall,0.9261221945137157
+lgbm,treino,precision,0.9985985674244784
+lgbm,teste,precision,0.9192450495049505
+lgbm,treino,auc,0.0
+lgbm,teste,auc,0.9768131151591772

@@ -1,13 +1,10 @@
 import gradio as gr
 import pandas as pd
 import os
-import joblib
-import numpy as np
-import onnxruntime as rt
 
-# --- 1. CARREGAMENTO DE DADOS E MODELOS ---
+# --- 1. CARREGAMENTO DE DADOS ---
 
-# Carregar os dados de teste
+# Carregar os dados de teste e o valor real
 try:
     X_test = pd.read_csv('data/X_test.csv')
     y_test = pd.read_csv('data/y_test.csv')
@@ -16,71 +13,72 @@ except FileNotFoundError:
     print("ERRO: 'X_test.csv' ou 'y_test.csv' não encontrados na pasta 'data'.")
     X_test, y_test = pd.DataFrame(), pd.DataFrame()
 
-# Carregar o scaler
+# Carregar o arquivo com as previsões pré-calculadas
 try:
-    scaler = joblib.load('models/scaler.pkl')
-    print("Scaler carregado com sucesso.")
+    # Este DataFrame terá colunas com os nomes dos modelos
+    predictions_df = pd.read_csv('data/predictions.csv')
+    print("Arquivo de previsões (predictions.csv) carregado com sucesso.")
 except FileNotFoundError:
-    print("ERRO: Arquivo 'models/scaler.pkl' não encontrado.")
-    scaler = None
+    print("ERRO: 'predictions.csv' não encontrado na pasta 'data'.")
+    predictions_df = pd.DataFrame()
 
-# Carregar os modelos ONNX
-model_names = ["knn", "mlp", "svc", "tree", "forest"]
-# A lista norm_model_names não é mais necessária, pois todos os modelos usarão dados normalizados.
-models = {}
-print("\nCarregando modelos ONNX...")
-for name in model_names:
-    caminho_onnx = f'models/{name}.onnx'
-    try:
-        models[name] = rt.InferenceSession(caminho_onnx)
-        print(f"-> Modelo '{name}.onnx' carregado com sucesso.")
-    except Exception as e:
-        print(f"ERRO ao carregar '{caminho_onnx}': {e}")
-print(f"\n{len(models)} modelos ONNX prontos para uso!")
+# --- 2. FUNÇÃO PARA A INTERFACE GRADIO ---
 
-
-# --- 2. FUNÇÃO PRINCIPAL DE INFERÊNCIA ---
-
-def run_inference_on_sample(example_index):
+def show_predictions_from_csv(sample_index):
     """
-    Executa todos os modelos para uma única amostra do conjunto de teste.
+    Busca os dados e as previsões com base no índice e os retorna para a interface.
     """
-    if X_test.empty or scaler is None:
-        return pd.DataFrame(), pd.DataFrame(), "Erro: Dados ou scaler não carregados."
+    sample_index = int(sample_index)
 
-    example_index = int(example_index)
-    selected_example_df = X_test.iloc[[example_index]]
-    true_label = y_test.iloc[example_index].iloc[0]
+    # 1. Pega a amostra de entrada (features) do X_test
+    selected_sample_df = X_test.iloc[[sample_index]].T.reset_index()
+    selected_sample_df.columns = ["Feature", "Valor"]
 
-    # --- LÓGICA DE TRANSFORMAÇÃO CORRIGIDA E SIMPLIFICADA ---
-    
-    # Aplica o scaler no DataFrame completo da amostra.
-    # O resultado é um array NumPy que será usado para TODOS os modelos.
-    input_data_np = scaler.transform(selected_example_df).astype(np.float32)
-    
-    # --- FIM DA CORREÇÃO ---
+    # 2. Pega o valor real e CONVERTE para um int padrão do Python
+    true_label = int(y_test.iloc[sample_index].iloc[0]) 
 
-    results = []
-    for name, sess in models.items():
-        input_name = sess.get_inputs()[0].name
-        
-        # Todos os modelos agora recebem os mesmos dados normalizados
-        prediction_result = sess.run(None, {input_name: input_data_np})
-        prediction = prediction_result[0][0]
-        
-        results.append({"Modelo": name, "Previsão da Classe": prediction})
-    
-    results_df = pd.DataFrame(results)
-    
-    return selected_example_df, results_df, str(true_label)
+    # 3. Pega as previsões dos modelos do predictions_df
+    results = predictions_df.iloc[[sample_index]].T.reset_index()
+    results.columns = ["Modelo", "Previsão"]
+
+    return selected_sample_df, results, true_label
 
 
-# --- 3. CONSTRUÇÃO DA INTERFACE GRADIO ---
+# --- 3. CONSTRUÇÃO DA INTERFACE GRADIO (SLIDER EMBAIXO) ---
 
 with gr.Blocks(theme=gr.themes.Soft()) as demo:
     gr.Markdown("# Painel de Comparação de Modelos de Classificação")
-    gr.Markdown("Use o slider abaixo para escolher uma amostra do conjunto de teste. A aplicação irá executar todos os modelos para essa amostra e mostrar suas previsões, comparando com o valor real.")
+    gr.Markdown("Use o slider na parte inferior para escolher uma amostra do conjunto de teste e comparar os resultados.")
 
+    gr.Markdown("---")
+    
+    # --- BLOCO SUPERIOR: DADOS DE ENTRADA ---
+    gr.Markdown("### Amostra Selecionada (Dados de Entrada)")
+    selected_example_output = gr.DataFrame(
+        headers=["Feature", "Valor"], 
+        label="Features", 
+        interactive=False
+    )
+
+    gr.Markdown("---")
+
+    # --- BLOCOS INTERMEDIÁRIOS: PREVISÕES E VALOR REAL LADO A LADO ---
+    with gr.Row(variant="panel"):
+        # Coluna da Esquerda para a tabela de previsões
+        with gr.Column(scale=2): 
+            gr.Markdown("### Previsão dos Modelos")
+            results_output = gr.DataFrame(
+                headers=["Modelo", "Previsão"], 
+                label="Previsão de Cada Modelo", 
+                interactive=False
+            )
+        
+        # Coluna da Direita para o valor real
+        with gr.Column(scale=1):
+            gr.Markdown("### Valor Real")
+            true_label_output = gr.Label(label="Classe Verdadeira")
+
+    # --- CONTROLE PRINCIPAL (MOVIDO PARA O FINAL) ---
     with gr.Row():
         example_slider = gr.Slider(
             minimum=0,
@@ -90,31 +88,18 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
             value=25
         )
 
-    gr.Markdown("---")
-
-    with gr.Row(variant="panel"):
-        with gr.Column(scale=3):
-            gr.Markdown("### Amostra Selecionada (Dados de Entrada)")
-            selected_example_output = gr.DataFrame(label="Features")
-        
-        with gr.Column(scale=1):
-            gr.Markdown("### Valor Real")
-            true_label_output = gr.Label(label="Classe Verdadeira")
-
-    gr.Markdown("---")
-    gr.Markdown("### Resultados da Classificação")
-    results_output = gr.DataFrame(label="Previsão de Cada Modelo")
-
+    # Os eventos não mudam de lugar, eles apenas referenciam os componentes
     example_slider.change(
-        fn=run_inference_on_sample,
+        fn=show_predictions_from_csv,
         inputs=example_slider,
         outputs=[selected_example_output, results_output, true_label_output]
     )
     
     demo.load(
-        fn=run_inference_on_sample,
+        fn=show_predictions_from_csv,
         inputs=example_slider,
         outputs=[selected_example_output, results_output, true_label_output]
     )
+
 
 demo.launch()

@@ -1,9 +1,0 @@
-modelo,etapa,métrica,valor
-svc,treino,accuracy,0.829867778570253
-svc,teste,accuracy,0.8305903006363836
-svc,treino,f1,0.8839055070944555
-svc,teste,f1,0.8837699488105992
-svc,treino,recall,0.919965710723192
-svc,teste,recall,0.9149002493765586
-svc,treino,precision,0.850565602709129
-svc,teste,precision,0.8546884100174723
