@@ -1,0 +1,109 @@
+{
+  "K-Nearest Neighbors (KNN)": {
+    "description": "O KNN é um algoritmo de aprendizado supervisionado não-paramétrico. Sua lógica é simples e intuitiva.\n- **Como funciona:** Para classificar um novo dado, ele busca os 'K' vizinhos mais próximos no conjunto de treino (com base em uma métrica de distância) e atribui a classe que for majoritária entre esses vizinhos.\n- **Pontos Fortes:** Fácil de implementar e entender. Não requer uma etapa de 'treino', pois a computação é feita no momento da predição.\n- **Pontos Fracos:** Pode ser computacionalmente caro para prever em datasets grandes, pois precisa calcular a distância para todos os pontos de treino.",
+    "params": {
+      "weights": "uniform",
+      "n_neighbors": 14,
+      "metric": "manhattan",
+      "algorithm": "ball_tree"
+    }
+  },
+  "Support Vector Classifier (SVC)": {
+    "description": "O Classificador de Vetores de Suporte é um modelo de classificação linear que busca a melhor 'fronteira' (hiperplano) que separa as classes.\n- **Como funciona:** Ele tenta encontrar o hiperplano que maximize a distância (a 'margem') entre os pontos de dados mais próximos das diferentes classes (os 'vetores de suporte').\n- **Pontos Fortes:** Eficaz em espaços de alta dimensão e quando o número de dimensões é maior que o número de amostras. Versátil através do uso de diferentes kernels (embora aqui um linear tenha sido usado).\n- **Pontos Fracos:** Não performa bem com grandes volumes de dados, pois o tempo de treino pode ser alto.",
+    "params": {
+      "penalty": "l2",
+      "max_iter": 10000,
+      "loss": "hinge",
+      "dual": true,
+      "C": 20
+    }
+  },
+  "Multi-layer Perceptron (MLP)": {
+    "description": "O MLP é um tipo de rede neural artificial, sendo um dos modelos mais fundamentais do deep learning.\n- **Como funciona:** Ele é composto por camadas de 'neurônios' interconectados (entrada, camadas ocultas e saída). Cada neurônio aplica uma transformação linear seguida por uma função de ativação não-linear. O modelo aprende ajustando os pesos das conexões através de um processo chamado backpropagation.\n- **Pontos Fortes:** Capaz de aprender padrões complexos e não-lineares nos dados.\n- **Pontos Fracos:** Requer um bom ajuste de hiperparâmetros, é computacionalmente intensivo e seus resultados podem ser difíceis de interpretar ('caixa-preta').",
+    "params": {
+      "solver": "lbfgs",
+      "learning_rate": "adaptive",
+      "hidden_layer_sizes": [50],
+      "batch_size": 32,
+      "activation": "logistic"
+    }
+  },
+  "Decision Tree": {
+    "description": "A Árvore de Decisão é um modelo de aprendizado supervisionado que cria uma estrutura semelhante a um fluxograma para tomar decisões.\n- **Como funciona:** Ela divide o conjunto de dados em subconjuntos cada vez menores com base em perguntas sobre os valores das features. O objetivo é criar nós (folhas) que sejam o mais 'puros' possível em relação à classe de saída.\n- **Pontos Fortes:** Fácil de entender e visualizar. Os resultados são altamente interpretáveis.\n- **Pontos Fracos:** Propenso a overfitting (memorizar os dados de treino), o que pode ser mitigado com a 'poda' da árvore (ajuste de hiperparâmetros como `max_depth`).",
+    "params": {
+      "splitter": "best",
+      "min_samples_split": 15,
+      "min_samples_leaf": 3,
+      "max_leaf_nodes": 13,
+      "max_features": 14,
+      "max_depth": 8,
+      "criterion": "gini",
+      "class_weight": null
+    }
+  },
+  "Random Forest": {
+    "description": "O Random Forest é um método de ensemble que utiliza múltiplas Árvores de Decisão para obter uma predição mais robusta.\n- **Como funciona:** Ele constrói várias árvores de decisão independentes em subamostras aleatórias dos dados e com subconjuntos aleatórios de features. A predição final é a classe mais votada pela maioria das árvores.\n- **Pontos Fortes:** Geralmente possui alta precisão e é robusto a overfitting. Consegue lidar bem com dados faltantes e manter a acurácia para grandes volumes de dados.\n- **Pontos Fracos:** Menos interpretável que uma única árvore de decisão.",
+    "params": {
+      "n_estimators": 130,
+      "min_samples_split": 17,
+      "min_samples_leaf": 13,
+      "max_leaf_nodes": 16,
+      "max_features": 7,
+      "max_depth": 14,
+      "criterion": "gini",
+      "class_weight": null,
+      "bootstrap": false
+    }
+  },
+  "Comitê de MLPs": {
+    "description": "Um comitê (ou ensemble) de MLPs é uma técnica que combina as predições de várias redes neurais para melhorar a performance geral.\n- **Como funciona:** Em vez de depender de uma única rede MLP, várias são treinadas (geralmente com pequenas variações nos parâmetros ou nos dados). A decisão final é tomada por votação ou pela média das probabilidades das redes individuais.\n- **Pontos Fortes:** Aumenta a robustez e a generalização do modelo, reduzindo a chance de overfitting a uma solução específica.\n- **Pontos Fracos:** Aumenta significativamente o custo computacional tanto no treino quanto na predição.",
+    "params": {
+      "Membro 1": {
+        "activation": "tanh",
+        "early_stopping": true,
+        "hidden_layer_sizes": [50],
+        "random_state": 0
+      },
+      "Membro 2": {
+        "activation": "tanh",
+        "alpha": 0.01,
+        "early_stopping": true,
+        "random_state": 9
+      },
+      "Membro 3": {
+        "activation": "tanh",
+        "alpha": 0.01,
+        "early_stopping": true,
+        "hidden_layer_sizes": [50, 50],
+        "random_state": 6
+      }
+    }
+  },
+  "XGBoost": {
+    "description": "O Extreme Gradient Boosting (XGBoost) é um algoritmo de boosting otimizado, conhecido por sua alta performance e velocidade.\n- **Como funciona:** É um método de ensemble que constrói modelos de forma sequencial. Cada novo modelo (geralmente uma árvore de decisão) é treinado para corrigir os erros do modelo anterior. O processo foca nos exemplos mais difíceis de classificar.\n- **Pontos Fortes:** Performance de ponta em competições de machine learning. Altamente eficiente, rápido e com regularização para evitar overfitting.\n- **Pontos Fracos:** Mais complexo de ajustar (muitos hiperparâmetros) e menos interpretável.",
+    "params": {
+      "n_estimators": 43,
+      "max_leaves": 15,
+      "max_depth": 6,
+      "grow_policy": "lossguide",
+      "criterion": "entropy",
+      "booster": "dart"
+    }
+  },
+  "LightGBM (LGBM)": {
+    "description": "O Light Gradient Boosting Machine é outro framework de gradient boosting, similar ao XGBoost, mas com foco em ser ainda mais rápido e eficiente em memória.\n- **Como funciona:** Utiliza uma técnica de crescimento de árvore 'por folha' (leaf-wise), em vez de 'por nível' (level-wise), o que pode levar a convergências mais rápidas. Também usa algoritmos baseados em histogramas para otimizar a busca pelos melhores splits.\n- **Pontos Fortes:** Velocidade de treino extremamente alta e menor uso de memória. Excelente para datasets muito grandes.\n- **Pontos Fracos:** Pode ser propenso a overfitting em datasets pequenos.",
+    "params": {
+      "num_leaves": 75,
+      "n_estimators": 225,
+      "max_depth": 7,
+      "learning_rate": 0.1267,
+      "boosting_type": "gbdt"
+    }
+  },
+  "Comitê Heterogêneo": {
+    "description": "Um comitê heterogêneo, também conhecido como 'stacking' ou 'voting ensemble', combina as predições de diferentes tipos de modelos.\n- **Como funciona:** Em vez de usar várias versões do mesmo algoritmo, ele agrega as predições de modelos fundamentalmente diferentes. A ideia é que os erros de um modelo possam ser compensados pelos acertos de outro, aproveitando os pontos fortes de cada um. A decisão final é geralmente por votação majoritária.\n- **Pontos Fortes:** Pode alcançar uma performance superior à de qualquer um dos modelos individuais, pois combina diferentes 'perspectivas' sobre os dados.\n- **Pontos Fracos:** Aumenta a complexidade do pipeline de modelagem e pode ser mais lento para prever.",
+    "params": {
+      "Membros do Comitê": "Decision Tree, XGBoost e Random Forest"
+    }
+  }
+}
