@@ -1,11 +1,17 @@
 {
   "K-Nearest Neighbors (KNN)": {
-    "description": "O KNN é um algoritmo de aprendizado supervisionado não-paramétrico. Sua lógica é simples e intuitiva.\n- **Como funciona:** Para classificar um novo dado, ele busca os 'K' vizinhos mais próximos no conjunto de treino (com base em uma métrica de distância) e atribui a classe que for majoritária entre esses vizinhos.\n- **Pontos Fortes:** Fácil de implementar e entender. Não requer uma etapa de 'treino', pois a computação é feita no momento da predição.\n- **Pontos Fracos:** Pode ser computacionalmente caro para prever em datasets grandes, pois precisa calcular a distância para todos os pontos de treino.",
+    "description": "O KNN é um algoritmo de aprendizado supervisionado não-paramétrico. Sua lógica é simples e intuitiva.\n- **Como funciona:** Para classificar um novo dado, ele busca os 'K' vizinhos mais próximos no conjunto de treino (com base em uma métrica de distância) e atribui a classe que for majoritária entre esses vizinhos.\n- **Pontos Fortes:** Fácil de implementar e entender. \n- **Pontos Fracos:** Pode ser computacionalmente caro para prever em datasets grandes, pois precisa calcular a distância para todos os pontos de treino.",
     "params": {
       "weights": "uniform",
       "n_neighbors": 14,
       "metric": "manhattan",
       "algorithm": "ball_tree"
+    },
+    "search_space": {
+      "n_neighbors": "Inteiros de 1 a 49",
+      "weights": ["uniform", "distance"],
+      "metric": ["euclidean", "manhattan", "minkowski"],
+      "algorithm": ["auto", "ball_tree", "kd_tree", "brute"]
     }
   },
   "Support Vector Classifier (SVC)": {
@@ -16,6 +22,13 @@
       "loss": "hinge",
       "dual": true,
       "C": 20
+    },
+    "search_space": {
+      "C": [0.001, 0.01, 0.1, 1, 10, 15, 20, 25, 30, 35, 40, 50],
+      "loss": ["hinge", "squared_hinge"],
+      "penalty": ["l1", "l2"],
+      "dual": [false, true],
+      "max_iter": [1000, 5000, 10000]
     }
   },
   "Multi-layer Perceptron (MLP)": {
@@ -26,6 +39,13 @@
       "hidden_layer_sizes": [50],
       "batch_size": 32,
       "activation": "logistic"
+    },
+    "search_space": {
+      "hidden_layer_sizes": [[125], [100], [50], [25], [10]],
+      "activation": ["identity", "logistic", "tanh", "relu"],
+      "solver": ["lbfgs", "sgd", "adam"],
+      "batch_size": [16, 32, 64, 128],
+      "learning_rate": ["constant", "invscaling", "adaptive"]
     }
   },
   "Decision Tree": {
@@ -39,6 +59,16 @@
       "max_depth": 8,
       "criterion": "gini",
       "class_weight": null
+    },
+    "search_space": {
+      "criterion": ["gini", "entropy", "log_loss"],
+      "splitter": ["best", "random"],
+      "max_depth": "Inteiros de 1 a 16",
+      "min_samples_split": "Inteiros de 2 a 19",
+      "min_samples_leaf": "Inteiros de 1 a 19",
+      "max_features": "Inteiros de 1 a 16",
+      "max_leaf_nodes": "Inteiros de 2 a 19",
+      "class_weight": ["balanced", null]
     }
   },
   "Random Forest": {
@@ -53,6 +83,17 @@
       "criterion": "gini",
       "class_weight": null,
       "bootstrap": false
+    },
+    "search_space": {
+      "n_estimators": "Inteiros de 10 a 150 (passo 10)",
+      "bootstrap": [true, false],
+      "criterion": ["gini", "entropy", "log_loss"],
+      "max_depth": "Inteiros de 1 a 16",
+      "min_samples_split": "Inteiros de 2 a 19",
+      "min_samples_leaf": "Inteiros de 1 a 19",
+      "max_features": "Inteiros de 1 a 16",
+      "max_leaf_nodes": "Inteiros de 2 a 19",
+      "class_weight": ["balanced", null]
     }
   },
   "Comitê de MLPs": {
@@ -77,6 +118,9 @@
         "hidden_layer_sizes": [50, 50],
         "random_state": 6
       }
+    },
+    "search_space": {
+      "Details": "Foram testadas 10 combinações de comitês, variando de 2 a 10 MLPs. Cada MLP foi construído com uma seleção aleatória dos seguintes hiperparâmetros: 'hidden_layer_sizes' em [[50], [100], [50, 50]], 'activation' em ['relu', 'tanh'], 'alpha' em [0.0001, 0.001, 0.01], 'solver' em ['adam', 'sgd']."
     }
   },
   "XGBoost": {
@@ -88,6 +132,14 @@
       "grow_policy": "lossguide",
       "criterion": "entropy",
       "booster": "dart"
+    },
+    "search_space": {
+      "n_estimators": "Inteiros de 5 a 99",
+      "max_leaves": "Inteiros de 0 a 100 (passo 5)",
+      "grow_policy": ["depthwise", "lossguide"],
+      "booster": ["gbtree", "gblinear", "dart"],
+      "criterion": ["gini", "entropy", "log_loss"],
+      "max_depth": "Inteiros de 1 a 16"
     }
   },
   "LightGBM (LGBM)": {
@@ -98,12 +150,22 @@
       "max_depth": 7,
       "learning_rate": 0.1267,
       "boosting_type": "gbdt"
+    },
+    "search_space": {
+      "boosting_type": ["gbdt", "dart", "rf"],
+      "n_estimators": "Inteiros de 50 a 250 (passo 25)",
+      "learning_rate": "25 valores espaçados linearmente entre 0.01 e 0.15",
+      "num_leaves": "Inteiros de 5 a 100 (passo 5)",
+      "max_depth": "Inteiros de 1 a 9"
     }
   },
   "Comitê Heterogêneo": {
     "description": "Um comitê heterogêneo, também conhecido como 'stacking' ou 'voting ensemble', combina as predições de diferentes tipos de modelos.\n- **Como funciona:** Em vez de usar várias versões do mesmo algoritmo, ele agrega as predições de modelos fundamentalmente diferentes. A ideia é que os erros de um modelo possam ser compensados pelos acertos de outro, aproveitando os pontos fortes de cada um. A decisão final é geralmente por votação majoritária.\n- **Pontos Fortes:** Pode alcançar uma performance superior à de qualquer um dos modelos individuais, pois combina diferentes 'perspectivas' sobre os dados.\n- **Pontos Fracos:** Aumenta a complexidade do pipeline de modelagem e pode ser mais lento para prever.",
     "params": {
       "Membros do Comitê": "Decision Tree, XGBoost e Random Forest"
+    },
+    "search_space": {
+      "Details": "Foram testadas diferentes combinações de 2 a 4 dos modelos campeões (XGBoost, LGBM, Random Forest, Decision Tree), utilizando os hiperparâmetros ótimos de cada um."
     }
   }
 }

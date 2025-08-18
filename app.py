@@ -148,6 +148,9 @@ with gr.Blocks(theme=gr.themes.Soft(), title="Painel de Análise de Modelos") as
                 # Adiciona um subtítulo para os hiperparâmetros
                 gr.Markdown("#### Hiperparâmetros Utilizados")
                 
+                # Mostra os hiperparâmetros utilizados
+                gr.JSON(value=info['search_space'], label="Espaço de busca")
+
                 # Mostra o dicionário de hiperparâmetros de forma visual
                 gr.JSON(value=info['params'], label="Estrutura do Modelo")
 
