@@ -196,8 +196,8 @@ with gr.Blocks(theme=gr.themes.Soft(), title="Painel de Análise de Modelos") as
                     """)
 
     with gr.Tab("Dados"):
-        gr.Markdown("# Fonte dos Dados")
-        gr.Markdown("## House_16H v2")
+        gr.Markdown("## Fonte dos Dados")
+        gr.Markdown("### House_16H v2")
         gr.Markdown("""
             Conjunto de dados obtido de OpenML (https://www.openml.org/search?type=data&status=active&id=821).
             Original source: DELVE repository of data. Source: collection of regression datasets by Luis Torgo (ltorgo@ncc.up.pt) at http://www.ncc.up.pt/~ltorgo/Regression/DataSets.html Characteristics: 22784 cases, 17 continuous attributes.
@@ -326,17 +326,119 @@ with gr.Blocks(theme=gr.themes.Soft(), title="Painel de Análise de Modelos") as
 
     with gr.Tab("Avaliação Comparativa"):
         # ABA DE GRÁFICOS 
-        gr.Markdown("## Visualização das Métricas de Performance")
-        gr.Markdown("Abaixo estão os gráficos gerados a partir da avaliação dos modelos no conjunto de teste.")
-        
-        gr.Gallery(
-            value=image_paths, 
-            label="Gráficos de Métricas", 
-            show_label=False, 
-            columns=[2], 
-            object_fit="contain"
-        )
+        gr.Markdown("""Para compreender melhor o desempenho dos modelos selecionados, foram gerados gráficos 
+                    comparativos exibindo os valores das principais métricas no conjunto de teste. Esses gráficos 
+                    de barras permitem uma visualização clara das diferenças entre os modelos finais, facilitando 
+                    a identificação de pontos fortes e fracos de cada um. Através dessa análise visual, podemos 
+                    avaliar como cada modelo equilibra acurácia, f1-score, recall, precisão e AUC, além de 
+                    entender quais técnicas se mostraram mais eficazes na tarefa proposta. 
+                    """)
+        gr.Image(label="Comparativo de Acurácia", value="images/acuracia.png", show_label=False, width=800)        
+        gr.Markdown("""O gráfico acima mostra a acurácia de cada modelo no conjunto de teste. 
+                    Os modelos MLP, Comitê de MLPs, Xgboost e Light GBM se destacaram com as maiores acurácias.
+                    """)
+        gr.Image(label="Comparativo de f1-score", value="images/f1.png", show_label=False, width=800)        
+        gr.Markdown("""O gráfico acima mostra o f1 score de cada modelo no conjunto de teste. 
+                    Os modelos MLP, Comitê de MLPs, Xgboost e Light GBM se destacaram com os maiores valores.
+                    """)
+        gr.Image(label="Comparativo de Precision", value="images/precisao.png", show_label=False, width=800)        
+        gr.Markdown("""O gráfico acima mostra a precisão de cada modelo no conjunto de teste. 
+                    Os modelos MLP, Comitê de MLPs, Xgboost e Light GBM se destacaram com os maiores valores.
+                    """)
+        gr.Image(label="Comparativo de AUC", value="images/auc.png", show_label=False, width=800)        
+        gr.Markdown("""O gráfico acima mostra a AUC de cada modelo no conjunto de teste. 
+                    Os modelos MLP, Comitê de MLPs, Comitê heterogêneno e Light GBM se destacaram com os maiores valores.
+                    """)
+        gr.Image(label="Comparativo de recall", value="images/recall.png", show_label=False, width=800)        
+        gr.Markdown("""O gráfico acima mostra a recall de cada modelo no conjunto de teste. 
+                    Os modelos MLP, Comitê de MLPs, Xgboost e KNN se destacaram com os maiores valores.
+                    """)
+        gr.Image(label="Comparativo Geral", value="images/metricas_geral.png", show_label=False, width=800)        
+        gr.Markdown("""Os modelos KNN, Árvore de Decisão, Random Forest e SVC apresentaram desempenho 
+                    inferior em comparação aos outros devido a diferentes limitações inerentes às suas 
+                    abordagens:
 
+                    ### KNN
+                    
+                    Apesar de sua simplicidade e eficácia em certos cenários, o KNN tende a sofrer 
+                    com alta variância e sensibilidade a ruído, especialmente em conjuntos de dados 
+                    maiores e mais complexos. Além disso, seu desempenho pode ser prejudicado se os 
+                    dados não possuírem uma separação bem definida no espaço vetorial. 
+                    ### Árvore de Decisão
+                    
+                     Embora interpretável, esse modelo frequentemente sofre de 
+                    overfitting, aprendendo demasiadamente os padrões do conjunto de treino e falhando 
+                    em generalizar bem para novos dados. 
+                    ### Random Forest
+                     
+                    Como um conjunto de múltiplas árvores de decisão, esse modelo é 
+                    mais robusto que uma única árvore, mas ainda assim pode ser limitado em cenários 
+                    onde a complexidade dos padrões exige modelos mais sofisticados. Além disso, pode 
+                    apresentar menor capacidade de captura de relações complexas nos dados em 
+                    comparação com modelos mais avançados, como redes neurais e boosting. 
+                    ### SVC (Support Vector Classifier)
+                     
+                    O SVC pode ser muito eficaz em espaços de baixa 
+                    dimensionalidade, mas pode ter dificuldades em conjuntos de dados grandes, 
+                    especialmente quando os dados não são perfeitamente separáveis. Seu desempenho 
+                    também depende fortemente da escolha do kernel e da escala dos dados, o que pode 
+                    torná-lo menos eficiente em comparação a modelos como XGBoost e LightGBM, que 
+                    conseguem capturar padrões complexos com maior flexibilidade. 
+                    
+                    No geral, os modelos baseados em boosting e comitês apresentaram um melhor equilíbrio 
+                    entre generalização e robustez, o que explica sua superioridade nos resultados finais.
+                    """)
+        gr.Markdown("## Seleção dos 4 melhores modelos")
+        gr.Markdown("""Para selecionar os quatro melhores modelos, foi aplicada uma média ponderada considerando 
+                    diferentes pesos para as métricas de avaliação: acurácia (1), f1-score (2.5), recall (2), precisão 
+                    (1.5) e AUC (2). Essa abordagem valoriza mais o f1-score, seguido do recall e AUC, 
+                    refletindo a importância de modelos que não apenas acertam a classificação, mas também 
+                    garantem um bom equilíbrio entre precisão e recall, além de entender a natureza dos dados e 
+                    seu desbalanceamento entre classes. 
+                    Os quatro melhores modelos selecionados com essa estratégia foram: 
+                    """)
+        gr.Markdown(""" 
+                    ### LGBM 
+                    
+                    Média ponderada mais alta, com destaque para recall (0.9261), f1-score 
+                    (0.9227) e AUC (0.9768), indicando alta capacidade preditiva e boa separação entre 
+                    classes. 
+                    """)
+        gr.Image(label="Matriz de Confusão LGBM", value="images/cm_lgbm.png", show_label=False, width=600)
+        gr.Markdown("""
+                    ### Comitê de MLPs 
+                    
+                    Desempenho muito próximo ao LGBM, com f1-score (0.9235) e 
+                    recall (0.9292) elevados, além de um AUC de 0.9762.
+                    """)
+        gr.Image(label="Matriz de Confusão Comitê de MLPs", value="images/cm_comiteMLP.png", show_label=False, width=600) 
+        gr.Markdown(""" 
+                    ### MLP 
+                    
+                    Fica ligeiramente abaixo do Comitê de MLPs, mantendo um equilíbrio entre 
+                    todas as métricas, especialmente recall (0.9218) e AUC (0.9744). 
+                    """)
+        gr.Image(label="Matriz de Confusão MLP", value="images/cm_mlp.png", show_label=False, width=600)
+        gr.Markdown("""
+                    ### Comitê Heterogêneo 
+                    
+                    Apesar de ter uma acurácia um pouco menor (0.8813), o 
+                    modelo se destacou pelo recall (0.9349) e um AUC competitivo (0.9659), garantindo 
+                    boa separação de classes. 
+                    """)
+        gr.Image(label="Matriz de Confusão Comitê Heterogêneo", value="images/cm_comiteHET.png", show_label=False, width=600)
+        gr.Markdown("""     
+                    Comparando esses resultados, os modelos LGBM e Comitê de MLPs são os mais fortes, 
+                    possivelmente devido à combinação de técnicas de aprendizado mais sofisticadas. O MLP 
+                    isolado também apresentou um desempenho robusto, o que indica que modelos de redes 
+                    neurais foram bem ajustados. Já o Comitê Heterogêneo se saiu bem em recall, garantindo boa 
+                    recuperação de instâncias positivas. 
+                    A análise gráfica desses modelos permite uma comparação visual dos desempenhos 
+                    ponderados, destacando suas diferenças em cada métrica e confirmando quais se saíram 
+                    melhor em aspectos específicos. 
+                    """)
+        gr.Image(label="Comparativo dos 4 Melhores Modelos", value="images/top4.png", show_label=False, width=800)
+        
     # Eventos
     example_slider.change(
         fn=show_predictions_from_csv,
