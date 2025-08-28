@@ -1,6 +1,6 @@
 # 🤖 Projeto de Classificação Supervisionada com Scikit-Learn
 
-Este repositório apresenta um projeto de aprendizado supervisionado focado na **classificação de dados tabulares**. O objetivo principal foi aplicar e comparar diferentes algoritmos de machine learning utilizando a biblioteca `scikit-learn`, com um pipeline completo de preparação de dados e avaliação cruzada. Adicionalmente, foi desenvolvido uma interface para interação com os modelos e explicação da metodologia aplicada, passando por assuntos desde a concepção do entendimento da regra de negócio, avaliação e preparação dos dados, aplicação de modelos de aprendizado de máquina e busca por hiperparâmetros, até avaliação dos resultados obtidos.
+Este repositório apresenta um projeto de aprendizado supervisionado focado na **classificação de dados tabulares**. O objetivo principal foi aplicar e comparar diferentes algoritmos de machine learning utilizando a biblioteca `scikit-learn`, com um pipeline completo de preparação de dados e avaliação cruzada. Adicionalmente, foi desenvolvido uma interface para interação com os modelos usando gradio e explicação da metodologia aplicada, passando por assuntos desde a concepção do entendimento da regra de negócio, avaliação e preparação dos dados, aplicação de modelos de aprendizado de máquina e busca por hiperparâmetros, até avaliação dos resultados obtidos.
 
 ## 🚀 Como Rodar o Projeto
 
@@ -55,7 +55,7 @@ Abra essa URL no seu navegador para ver a aplicação funcionando e interagir co
 
 
 ## 📚 Estrutura do projeto
-O projeto consiste em 2 arquivos principais, main.ipynb e app.py.
+O projeto consiste em 2 arquivos principais, main.ipynb e app.py. Além deles, para organização, temos a pasta de images, que guarda os gráficos principais que foram montados no notebook main e escolhidos para serem exibidos na página. Temos também a pasta data que guarda os dataframes de avaliação usados como registro do desempenho dos modelos. Models conta com as versões finais já treinadas dos modelos utilizados e do scaler que foi usado na transformação, quando necessária. Docs conta com 2 arquivos pdf relacionados às especificações do projeto acadêmico original para o qual foi desenvolvido. 
 
 ### main.ipynb
 Neste arquivo encontra-se todo o processo de ciência de dados realizado. Importação dos dados, manipulações, análise exploratória, construção dos modelos e otimização, aplicação e avaliação dos resultados.
@@ -97,6 +97,8 @@ Foram aplicados diversos algoritmos de classificação, incluindo:
 - pandas
 - numpy
 - matplotlib / seaborn
+- gradio
+- joblib
 
 ---
 
