@@ -53,6 +53,16 @@ Após executar o comando, o terminal exibirá um endereço local, geralmente alg
 
 Abra essa URL no seu navegador para ver a aplicação funcionando e interagir com os modelos de classificação.
 
+
+## 📚 Estrutura do projeto
+O projeto consiste em 2 arquivos principais, main.ipynb e app.py.
+
+### main.ipynb
+Neste arquivo encontra-se todo o processo de ciência de dados realizado. Importação dos dados, manipulações, análise exploratória, construção dos modelos e otimização, aplicação e avaliação dos resultados.
+
+### app.py
+Arquivo que utiliza a biblioteca gradio para montagem da interface de interação com os modelos e visualização geral do processo de desenvolvimento do projeto.
+
 ## 📚 Etapas Desenvolvidas
 
 ### 🔎 1. Análise e Pré-processamento de Dados
@@ -84,7 +94,6 @@ Foram aplicados diversos algoritmos de classificação, incluindo:
 
 - Python
 - scikit-learn
-- xgboost
 - pandas
 - numpy
 - matplotlib / seaborn
