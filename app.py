@@ -92,7 +92,7 @@ with gr.Blocks(theme=gr.themes.Soft(), title="Painel de Análise de Modelos") as
         gr.Markdown("""O mercado imobiliário é altamente competitivo e vem crescendo cada vez mais nos últimos 
                     anos, trazendo com isso a necessidade de se refinarem as estratégias para se manter nele. A 
                     atribuição de preço a casas e apartamentos é uma prática que apesar de se debruçar sobre uma 
-                    base objetiva dos dados referentes àquele imóvel, ainda se utilizade uma subjetividade 
+                    base objetiva dos dados referentes àquele imóvel, ainda se utiliza de uma subjetividade 
                     humana, além da sazonalidade e oscilações do contexto do momento. Desde área, quantidade 
                     de cômodos, até a localização, vizinhança, ou a conjuntura econômica são atributos que 
                     influenciam no seu valor, e alguns desses atributos podem variar de acordo com a 
@@ -100,49 +100,53 @@ with gr.Blocks(theme=gr.themes.Soft(), title="Painel de Análise de Modelos") as
                     problema podemos inferir que trata-se de uma situação que pode se beneficiar de modelos de 
                     aprendizagem de máquina para tratar essa grande quantidade de atributos diferentes que o 
                     compõem e assim se tornar uma ferramenta efetiva para o problema.
-                    Este projeto visa desenvolver um modelo de classificação para prever o preço mediano de casas em regiões dos EUA, utilizando dados demográficos e do mercado imobiliário. 
+                    Este projeto visa desenvolver e avaliar nove modelos de classificação para classificar a partir do preço mediano de casas em regiões dos EUA, utilizando dados demográficos e do mercado imobiliário. 
                     O objetivo é auxiliar na tomada de decisões relacionadas a investimentos imobiliários e políticas habitacionais, fornecendo previsões precisas sobre o valor das propriedades.
                     """)
         gr.Markdown("### Objetivos do Negócio")
         gr.Markdown("""Para entender as metas estabelecidas é preciso saber que o dataset utilizado tem um target 
                     binário, ou seja, trata-se de um problema de classificação. Então, o objetivo do negócio é 
-                    criar modelos de aprendizagem capazes de forma satisfatória, afim de demonstrar que as 
+                    criar modelos de aprendizagem capazes de forma satisfatória, a fim de demonstrar que as 
                     ferramentas de inteligência artificial podem fazer parte do ecossistema imobiliário. 
                     """)
         gr.Markdown("### Desafios e Limitações")
-        gr.Markdown("""Por se tratar de um problema multifatorial e discretizado a partir de uma base de dados, não 
-                    temos as descrições de cada atributo. Portanto, o entendimento dos resultados surgirá a partir 
-                    da avaliação do desempenho dos modelos, e não de análises dos dados. Dado que a base de 
-                    dados é grande e com muitos atributos, e também, como descrita na documentação, 
+        gr.Markdown("""Dado que a base de dados é grande e com muitos atributos, e também, como descrita na documentação, 
                     possivelmente com alta variância e baixa correlação entre atributos, é possível que isso exija 
                     uma complexidade maior do modelo aplicado, o que pode resultar em uma baixa performance 
-                    caso essa complexidade não seja atingida. 
+                    caso essa complexidade não seja atingida. Para contornar esse possível problema, 
+                    pretendemos testar diferentes modelos e técnicas de regularização, dessa forma, com uma 
+                    abordagem mais ampla, temos a possibilidade de encontrar um modelo que se adeque melhor ao 
+                    problema.
                     """)
         gr.Markdown("## Critérios de Sucesso do Negócio")
-        gr.Markdown("""Atingir uma acurácia de 90% na classificação dos imóveis. Esse valor demonstra uma 
-                    performance suficientemente boa para auxiliar usuários na identificação de imóveis caros, o 
-                    que pode trazer maior segurança nos negócios.
+        gr.Markdown("""Atingir uma precisão de 90% na classificação dos imóveis. Dado que a classe positiva são 
+                    valores abaixo do limiar, leia-se, mais baratos, a precisão é uma métrica importante, pois 
+                    do ponto de vista do negócio, ao precificar um imóvel abaixo do valor real, o vendedor 
+                    pode ter um prejuízo financeiro. Já ao precificar acima do valor real, o imóvel ainda pode ser vendido,
+                    mas com uma probabilidade menor, e caso não seja, ele pode ser reavaliado. 
                     """)
         gr.Markdown("### Inventário de Recursos")
         gr.Markdown("""O projeto contará com uma base de dados imobiliária do census governamental dos Estados 
                     Unidos, a qual possui 16 atributos e um rótulo binário criado a partir do preço. No quesito 
                     computacional, o desenvolvimento se beneficiará do uso da linguagem de programação 
-                    Python e suas bibliotecas para manipulação de dados e criação de modelos de inteligência 
-                    artificial, como pandas, Scikitearn e PyTorch. Além disso, a utilização do ambiente de 
+                    Python e suas bibliotecas para manipulação de dados e criação de modelos de aprendizagem 
+                    de máquina, como pandas, Scikitearn e PyTorch. Além disso, a utilização do ambiente de 
                     desenvolvimento colaborativo Google Colab para trabalho em equipe, implementação dos 
                     modelos e treinamento utilizando gpu. 
                     """)
         gr.Markdown("### Requisitos")
         gr.Markdown("""Implementação de um modelo de classificação binária para precificação de imóveis e sua 
-                    avaliação por métricas como acurácia, f1-score, precision, recall. 
-                    Pressuposições.  O problema é resolvível por modelos de aprendizado de máquina ou não 
+                    avaliação por métricas como acurácia, f1-score, precision, recall e AUC da curva de precisão e recall. 
+                    ### Pressuposições  
+                    O problema é resolvível por modelos de aprendizado de máquina e não 
                     excede a complexidade que o poder computacional disponível nos permite utilizar. Os dados 
-                    são representativos da realidade.
+                    são representativos da realidade, dessa forma, resultados positivos advindos deste projeto
+                    podem ser extendidos para experimentações no mundo real.
                     """)
         gr.Markdown("### Restrições")
         gr.Markdown("""A capacidade computacional disponível é limitada, o que pode restringir o uso de hiperparâmetros mais robustos.""")
         gr.Markdown("### Riscos")
-        gr.Markdown("""Baixa performance do modelo como reflexo de uma complexidade alta no problema. Baixa 
+        gr.Markdown("""Baixa performance do modelo como reflexo de uma complexidade alta no problema. Possível baixa 
                     capacidade de generalização por conta do dataset não ser representativo da realidade.
                     """)
         gr.Markdown("### Objetivos da Ciência de Dados")
@@ -154,7 +158,7 @@ with gr.Blocks(theme=gr.themes.Soft(), title="Painel de Análise de Modelos") as
                     """)
         gr.Markdown("### Critérios de Sucesso da Ciência de Dados")
         gr.Markdown("#### *Acurácia do Modelo*")
-        gr.Markdown(""" O modelo deve atingir pelo menos 90% de acurácia na 
+        gr.Markdown(""" O modelo deve atingir pelo menos 90% de precisão na 
                     classificação dos imóveis, conforme definido nos critérios de sucesso do negócio.""") 
         gr.Markdown("#### *Equilíbrio entre Precisão e Recall*")
         gr.Markdown(""" Métricas como F1-score devem ser avaliadas 
@@ -163,7 +167,7 @@ with gr.Blocks(theme=gr.themes.Soft(), title="Painel de Análise de Modelos") as
         gr.Markdown(""" O modelo deve ser capaz de fazer previsões consistentes em 
                     diferentes subconjuntos dos dados, evitando overfitting.
                     """)
-        gr.Markdown("#### *Eficiência Computacional*")
+        gr.Markdown("### *Eficiência Computacional*")
         gr.Markdown(""" O tempo de treinamento e inferência do modelo deve ser 
                     viável para implementação prática.
                     """)
@@ -187,12 +191,11 @@ with gr.Blocks(theme=gr.themes.Soft(), title="Painel de Análise de Modelos") as
                     """)
         gr.Markdown("#### *Avaliação e documentação*")
         gr.Markdown(""" Fase onde analisamos o desempenho final obtido no 
-                    conjunto de teste. Além disso será realizada a documentação da fase de desenvolvimento 
-                    afim de entender os erros e acertos no processo.
+                    conjunto de teste. 
                     """)
         gr.Markdown("### Ferramentas e Técnicas previstas")
         gr.Markdown("""Python (linguagem principal), Pandas, NumPy, Scikit-learn, PyTorch, 
-                    Matplotlib e Seaborn. Técnicas: Regularização, cross-validation, gridsearch.
+                    Matplotlib e Seaborn. Técnicas: Regularização, cross-validation, random search.
                     """)
 
     with gr.Tab("Dados"):
@@ -225,12 +228,11 @@ with gr.Blocks(theme=gr.themes.Soft(), title="Painel de Análise de Modelos") as
         gr.Markdown("# Análise Exploratória dos Dados")
         gr.Markdown("## Relatório inicial da coleta de dados")
         gr.Markdown("""Os dados foram obtidos a partir do site OpenML disponibilizados por Joaquin Vanschoren 
-                    sendo a segunda versão de outro dataset. Os dados originais foram retirados do US Census 
-                    Bureau de uma coleta que fez parte do censo de 1990 dos Estados Unidos. A versão 2 deste 
-                    dataset, difere da versão anterior apenas em relação ao atributo “Price”, preço, o qual foi 
-                    transformado em uma classe que divide em positivo e negativo a partir de um valor arbitrário 
-                    escolhido pelo desenvolvedor dos dados. Todas os atributos estão discretizados e não foram 
-                    fornecidas descrições sobre eles na documentação.
+                    sendo a segunda versão de outro dataset. A versão disponibilizada no OpenML não conta com uma descrição
+                    completa dos dados, portanto para entendê-los melhor, buscamos a documentação original do dataset
+                    onde encontramos as descrições do que cada coluna representa, dado que na versão do OpenML as colunas encontram-se
+                    discretizadas. Para encontrar o limiar utilizado para binarizar o target, comparamos a versão 2 com a versão original do dataset,
+                    e a partir de uma análise dos dados identificamos o limiar de 50000. 
                     """)
         gr.Markdown("## Descrição dos Dados")
         gr.Markdown("""O conjunto conta com 17 colunas, sendo 16 features e 1 target baseado em preço, e possui 
@@ -263,31 +265,22 @@ with gr.Blocks(theme=gr.themes.Soft(), title="Painel de Análise de Modelos") as
                     comprometer a performance preditiva.    
                     """)
         gr.Image(label="PCA - Explained Variance", value="images/explained_variance_pca.png", show_label=False, width=800)
-        gr.Markdown("""A partir de uma análise da versão dos dados utilizadas no projeto v2, e a versão anterior, 
-                    conseguimos identificar o limiar utilizado para separar as classes no problema, o que não foi 
-                    explicado na documentação do conjunto. A classe target foi dividida da seguinte forma, 
-                    valores menores ou iguais a 50000 foram mapeados para a classe positiva “P”, enquanto que 
-                    valores maiores se tornaram a classe negativa “N”. Esta é a conclusão mais provável, 
-                    entretanto não podemos afirmar com certeza, dado que ao realizar a análise encontramos que 
-                    uma das classe tinha o valor máximo 50000 e a outra o valor mínimo de 50100, estando o 
-                    limiar dentro desse alcance supomos 50000 por conveniência. 
-                    """)
+
         gr.Markdown("## Qualidade dos Dados")
         gr.Markdown("""A ausência de dados faltantes é um fator positivo observado no dataset, uma vez que a etapa 
                     de tratamento desse tipo de problema não precisou ser implementada. A documentação 
                     deixou claro que foram realizadas alterações nos dados, entretanto não informou exatamente 
                     que tipo foi executado, apenas alegou ter transformado contagens em proporções adequadas. 
-                    A falta de descrições na documentação sobre o significado de cada atributo é um fator que 
-                    pode atrapalhar o processo de treinamento e aprendizagem do modelo, visto que ter 
-                    informações sobre as colunas ajudaria em ter uma ideia do que influencia o desempenho do 
-                    modelo e assim ter o entendimento e capacidade de explicação do problema na realidade. 
-                    Apesar de afirmar ter realizado alterações, acreditamos que uma das colunas, a “P1”, não foi 
-                    alvo delas, mas a conclusão dessa suposição não pode ser feita dado que não sabemos o que a 
-                    coluna representa. A grande presença de outliers não é um problema, e a partir da análise que 
+                    Apenas a coluna "P1" não foi alvo dessas alterações, a qual, por meio da investigação
+                    da documentação original, descobrimos que representa a população total da região.
+                    A grande presença de outliers não é um problema, e a partir da análise que 
                     fizemos, acreditamos que o sucesso do projeto depende em grande parte da forma como 
-                    iremos lidar com eles. O dataset carece de uma descrição detalhada e diverge um pouco das 
-                    afirmações feitas sobre ele na documentação. Apesar disso, acreditamos que ele tem 
-                    qualidade o suficiente para que o projeto seja realizado e que as metas definidas sejam 
+                    iremos lidar com eles. Por se tratar de um subconjunto manualmente criado a partir dos dados
+                    originais no qual, para a criação do problema, foram escolhidos atributos intencionalmente com alta variância
+                    e baixa correlação com o target, é possível que a tarefa possua uma dificuldade maior do que o usual. 
+                    Esta dificuldade pode ser um desafio, mas também uma oportunidade de demonstrar a eficácia de modelos de
+                    aprendizagem de máquina em problemas complexos.
+                    Apesar disso, acreditamos que o conjunto tem qualidade o suficiente para que o projeto seja realizado e que as metas definidas sejam 
                     atingidas de forma satisfatória.
                     """)
 
@@ -333,25 +326,28 @@ with gr.Blocks(theme=gr.themes.Soft(), title="Painel de Análise de Modelos") as
                     avaliar como cada modelo equilibra acurácia, f1-score, recall, precisão e AUC, além de 
                     entender quais técnicas se mostraram mais eficazes na tarefa proposta. 
                     """)
-        gr.Image(label="Comparativo de Acurácia", value="images/acuracia.png", show_label=False, width=800)        
-        gr.Markdown("""O gráfico acima mostra a acurácia de cada modelo no conjunto de teste. 
+        gr.Markdown("""O gráfico abaixo mostra a acurácia de cada modelo no conjunto de teste. 
                     Os modelos MLP, Comitê de MLPs, Xgboost e Light GBM se destacaram com as maiores acurácias.
                     """)
+        gr.Image(label="Comparativo de Acurácia", value="images/acuracia.png", show_label=False, width=800)        
+        gr.Markdown("""O gráfico abaixo mostra o f1 score de cada modelo no conjunto de teste. 
+                    Os modelos MLP, Comitê de MLPs, Xgboost e Light GBM se destacaram com os maiores valores.
+                    """)
         gr.Image(label="Comparativo de f1-score", value="images/f1.png", show_label=False, width=800)        
-        gr.Markdown("""O gráfico acima mostra o f1 score de cada modelo no conjunto de teste. 
+        gr.Markdown("""O gráfico abaixo mostra a precisão de cada modelo no conjunto de teste. 
                     Os modelos MLP, Comitê de MLPs, Xgboost e Light GBM se destacaram com os maiores valores.
                     """)
         gr.Image(label="Comparativo de Precision", value="images/precisao.png", show_label=False, width=800)        
-        gr.Markdown("""O gráfico acima mostra a precisão de cada modelo no conjunto de teste. 
-                    Os modelos MLP, Comitê de MLPs, Xgboost e Light GBM se destacaram com os maiores valores.
-                    """)
-        gr.Image(label="Comparativo de AUC", value="images/auc.png", show_label=False, width=800)        
-        gr.Markdown("""O gráfico acima mostra a AUC de cada modelo no conjunto de teste. 
+        gr.Markdown("""O gráfico abaixo mostra a AUC da curva de precisão e recall de cada modelo no conjunto de teste. 
                     Os modelos MLP, Comitê de MLPs, Comitê heterogêneno e Light GBM se destacaram com os maiores valores.
                     """)
-        gr.Image(label="Comparativo de recall", value="images/recall.png", show_label=False, width=800)        
-        gr.Markdown("""O gráfico acima mostra a recall de cada modelo no conjunto de teste. 
+        gr.Image(label="Comparativo de AUC", value="images/auc.png", show_label=False, width=800)        
+        gr.Markdown("""O gráfico abaixo mostra a recall de cada modelo no conjunto de teste. 
                     Os modelos MLP, Comitê de MLPs, Xgboost e KNN se destacaram com os maiores valores.
+                    """)
+        gr.Image(label="Comparativo de recall", value="images/recall.png", show_label=False, width=800)        
+        gr.Markdown("""O gráfico abaixo mostra um comparativo geral entre os modelos, 
+                    considerando todas as métricas avaliadas.
                     """)
         gr.Image(label="Comparativo Geral", value="images/metricas_geral.png", show_label=False, width=800)        
         gr.Markdown("""Os modelos KNN, Árvore de Decisão, Random Forest e SVC apresentaram desempenho 
